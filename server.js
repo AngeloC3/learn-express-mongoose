@@ -36,9 +36,14 @@ app.get('/home', (_, res) => {
   Home.show_home(res);
 })
 
-app.get('/available', (_, res) => {
-  BooksStatus.show_all_books_status(res);
-})
+app.get('/available', async (_, res) => {
+  try {
+    const availableBooks = await Books.find({ status: "available" }, { title: 1, status: 1, _id: 0 });
+    res.json(availableBooks);
+  } catch (err) {
+    res.status(500).send('Internal Server Error');
+  }
+});
 
 app.get('/books', (_, res) => {
   Books.show_books()
@@ -46,8 +51,13 @@ app.get('/books', (_, res) => {
     .catch((_) => res.send('No books found'));
 })
 
-app.get('/authors', (_, res) => {
-  Authors.show_all_authors(res);
+app.get('/authors', async (_, res) => {
+  try {
+    const authors = await Authors.find({}, { name: 1, lifespan: 1, _id: 0 });
+    res.json(authors);
+  } catch (err) {
+    res.status(500).send('Internal Server Error');
+  }
 })
 
 app.get('/book_dtls', (req, res) => {
