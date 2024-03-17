@@ -41,6 +41,7 @@ app.get('/available', async (_, res) => {
     const availableBooks = await Books.find({ status: "available" }, { title: 1, status: 1, _id: 0 });
     res.json(availableBooks);
   } catch (err) {
+    console.log(err)
     res.status(500).send('Internal Server Error');
   }
 });
